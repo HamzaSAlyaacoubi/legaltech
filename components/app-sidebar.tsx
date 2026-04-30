@@ -36,7 +36,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar"
+
+import Logo  from "@/public/img/logobgless.png"
+import Image from "next/image"
 
 const data = {
   user: {
@@ -175,23 +180,53 @@ const data = {
   ],
 }
 
+function SidebarHeaderContent() {
+  const { state } = useSidebar()
+  const [isHovered, setIsHovered] = React.useState(false)
+  const isCollapsed = state === "collapsed"
+
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          asChild
+          className="data-[slot=sidebar-menu-button]:p-1.5! data-[slot=sidebar-menu-button]:py-7!"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <a href="#" className="flex items-center">
+            {/* Show logo when not hovered or sidebar is open */}
+            {!(isCollapsed && isHovered) && (
+              <>
+                <Image
+                  src={Logo}
+                  alt="Logo"
+                  width={45}
+                  height={45}
+                  className="object-contain"
+                />
+                <span>
+                  <p className="text-base font-semibold text-logo p-0">LegalTech</p>
+                  <p className="text-[0.6rem] text-muted-foreground">
+                    BY HELKINZ
+                  </p>
+                </span>
+              </>
+            )}
+            {/* Show trigger when hovering (if collapsed) or always (if open) */}
+            {(isHovered || !isCollapsed) && <SidebarTrigger className="ml-auto" />}
+          </a>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  )
+}
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
-            >
-              <a href="#">
-                <IconInnerShadowTop className="size-5!" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <SidebarHeaderContent />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

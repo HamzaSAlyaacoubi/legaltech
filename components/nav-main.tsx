@@ -49,11 +49,11 @@ export function NavMain({
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild tooltip={item.title} isActive={pathname.startsWith(item.url)}
-              className="rounded-md data-active:bg-primary-foreground data-active:hover:bg-primary-foreground data-active:border-r-4 data-active:border-primary">
+              className="rounded-xl data-active:bg-primary data-active:hover:bg-primary data-active:text-white data-active:hover:text-white">
                 
                 <Link href={item.url}>
                 {item.icon && <item.icon />}
-                  <span>{item.title}</span>
+                  <span className="text-">{item.title}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
