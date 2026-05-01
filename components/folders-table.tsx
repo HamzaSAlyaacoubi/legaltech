@@ -1,5 +1,5 @@
 "use client"
-
+ 
 import { useState } from "react"
 import {
   DropdownMenu,
@@ -24,7 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { IconDotsVertical, IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
-
+import { Folder } from "lucide-react"
+ 
 interface Folder {
   id: string
   folderName: string
@@ -32,8 +33,9 @@ interface Folder {
   client: string
   responsible: string
   date: string
+  elements: number
 }
-
+ 
 const sampleFolders: Folder[] = [
   {
     id: "1",
@@ -42,6 +44,7 @@ const sampleFolders: Folder[] = [
     client: "Acme Corp",
     responsible: "John Smith",
     date: "2024-01-15",
+    elements: 8,
   },
   {
     id: "2",
@@ -50,6 +53,7 @@ const sampleFolders: Folder[] = [
     client: "Tech Innovations",
     responsible: "Sarah Johnson",
     date: "2024-02-20",
+    elements: 8,
   },
   {
     id: "3",
@@ -58,6 +62,7 @@ const sampleFolders: Folder[] = [
     client: "Global Systems",
     responsible: "Mike Davis",
     date: "2024-03-10",
+    elements: 8,
   },
   {
     id: "4",
@@ -66,6 +71,7 @@ const sampleFolders: Folder[] = [
     client: "Capital Partners",
     responsible: "Emily Wilson",
     date: "2024-04-05",
+    elements: 8,
   },
   {
     id: "5",
@@ -74,35 +80,36 @@ const sampleFolders: Folder[] = [
     client: "Finance Group",
     responsible: "Robert Brown",
     date: "2024-04-25",
+    elements: 8,
   },
 ]
-
+ 
 export function FoldersTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(4)
   const totalItems = 24
-
+ 
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems)
   const paginatedFolders = sampleFolders.slice(startIndex, endIndex)
-
+ 
   const handlePrevious = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1))
   }
-
+ 
   const handleNext = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages))
   }
-
+ 
   const handleItemsPerPageChange = (value: string) => {
     setItemsPerPage(parseInt(value))
     setCurrentPage(1)
   }
-
+ 
   return (
     <div className="flex flex-col gap-4">
-      <div className="overflow-hidden rounded-lg border bg-table">
+      <div className="overflow-hidden rounded-4xl border bg-background">
         <Table>
           <TableHeader className="bg-table-header">
             <TableRow>
@@ -117,7 +124,13 @@ export function FoldersTable() {
           <TableBody>
             {paginatedFolders.map((folder) => (
               <TableRow key={folder.id}>
-                <TableCell className="font-medium">{folder.folderName}</TableCell>
+                <TableCell className="font-medium ">
+                  <div className="flex items-center gap-2">
+                    <Folder className="text-primary fill-primary" />
+                     {folder.folderName}
+                  </div>
+                    <p className="text-muted-foreground text-xs pl-8">{folder.elements} Elements</p>
+                </TableCell>
                 <TableCell>{folder.reference}</TableCell>
                 <TableCell>{folder.client}</TableCell>
                 <TableCell>{folder.responsible}</TableCell>
@@ -151,12 +164,12 @@ export function FoldersTable() {
           </TableBody>
         </Table>
       </div>
-
+ 
       <div className="flex items-center justify-between px-2">
         <div className="text-sm text-muted-foreground">
           Showing {startIndex + 1} to {endIndex} of {totalItems} folders
         </div>
-
+ 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">Folders per page</span>
@@ -171,7 +184,7 @@ export function FoldersTable() {
               </SelectContent>
             </Select>
           </div>
-
+ 
           <div className="flex gap-2">
             <Button
               variant="outline"
