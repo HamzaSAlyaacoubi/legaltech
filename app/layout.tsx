@@ -49,7 +49,7 @@ export default function RootLayout({
             }
           >
             <TooltipProvider>
-              <AppSidebar variant="inset" />
+              <AppSidebar  />
               <SidebarInset>
                 <SiteHeader />
                 <div className="px-4 lg:px-6">
