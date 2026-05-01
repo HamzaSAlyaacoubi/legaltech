@@ -126,6 +126,8 @@
     --sidebar-ring: oklch(0.553 0.013 58.071);
 
     --logo: rgb(255, 255, 255);
+    --table: oklch(0.147 0.004 49.25);
+    --table-header: oklch(0.268 0.007 34.298);
 }
 
 @layer base {

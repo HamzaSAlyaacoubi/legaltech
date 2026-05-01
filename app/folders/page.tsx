@@ -2,6 +2,7 @@ import { FoldersTable } from "@/components/folders-table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
+  CustomSelectTrigger,
   Select,
   SelectContent,
   SelectGroup,
@@ -11,7 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { Plus, Upload } from "lucide-react"
+import { Plus, Upload, ListFilter, FolderPlus, Folder } from "lucide-react"
+import { IconSearch } from "@tabler/icons-react"
+
 
 export default function Folders() {
   return (
@@ -26,32 +29,42 @@ export default function Folders() {
               </p>
             </div>
             <div className="flex items-end justify-end gap-2">
-              <Input placeholder="Search folders..." className="max-w-sm" />
+              <div className="relative ">
+                <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground size-4" />
+                <Input
+                  placeholder="Search folders..."
+                  className="pl-9"
+                />
+              </div>
               <Select>
-                <SelectTrigger className="w-full max-w-48">
-                  <SelectValue placeholder="Select a fruit" />
-                </SelectTrigger>
+                <CustomSelectTrigger className="">
+                  <ListFilter />
+                  <SelectValue placeholder="Filter" />
+                </CustomSelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Fruits</SelectLabel>
-                    <SelectItem value="apple">Apple</SelectItem>
-                    <SelectItem value="banana">Banana</SelectItem>
-                    <SelectItem value="blueberry">Blueberry</SelectItem>
-                    <SelectItem value="grapes">Grapes</SelectItem>
-                    <SelectItem value="pineapple">Pineapple</SelectItem>
+                    <SelectLabel>Filter by</SelectLabel>
+                    <SelectItem value="name">Folder Name</SelectItem>
+                    <SelectItem value="reference">Reference</SelectItem>
+                    <SelectItem value="client">Client</SelectItem>
+                    <SelectItem value="responsable">Responsable</SelectItem>
+                    <SelectItem value="date">Date</SelectItem>
+                    <Separator orientation="horizontal"/>
+                    <SelectItem value="asc">Ascending</SelectItem>
+                    <SelectItem value="desc">Descending</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <div className="inline-flex border-primary border rounded-4xl text-primary w-full">
-                <Button variant="outline" >
-                  <Plus className="w-4 h-4 mr-2" />
+              <div className="flex gap-0 border-primary border rounded-4xl text-primary">
+                <Button variant="outline" className="border-0 hover:bg-primary/10 rounded-r-none">
+                  <FolderPlus className="w-4 h-4 mr-2" />
                   New Folder
                 </Button>
                 <Separator orientation="vertical"
-                            className="mx-2 data-[orientation=vertical] text-primary"/>
+                            className="bg-primary"/>
                 
-                <Button variant="ghost" >
-                  <Upload className="w-4 h-4 mr-2" />
+                <Button variant="ghost" className="border-0 hover:bg-primary/10 rounded-l-none">
+                  <Upload className="w-4 h-4" />
                 </Button>
               </div>
  
