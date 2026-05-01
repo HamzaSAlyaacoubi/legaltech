@@ -40,6 +40,7 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
+          <TooltipProvider>
           <SidebarProvider
             style={
               {
@@ -48,7 +49,6 @@ export default function RootLayout({
               } as React.CSSProperties
             }
           >
-            <TooltipProvider>
               <AppSidebar  />
               <SidebarInset>
                 <SiteHeader />
@@ -65,10 +65,10 @@ export default function RootLayout({
                   </h1>
                 </div>
 
-                {children}
-              </SidebarInset>
+                  {children}
+                </SidebarInset>
+            </SidebarProvider>
             </TooltipProvider>
-          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>

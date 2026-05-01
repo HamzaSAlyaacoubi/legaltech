@@ -10,6 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
+import { Plus, Upload } from "lucide-react"
 
 export default function Folders() {
   return (
@@ -40,7 +42,19 @@ export default function Folders() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <Button variant="outline">New Folder</Button>
+              <div className="flex gap-0 border-primary border rounded-4xl text-primary">
+                <Button variant="outline" className="border-0 hover:bg-primary/10 rounded-r-none">
+                  <Plus className="w-4 h-4 mr-2" />
+                  New Folder
+                </Button>
+                <Separator orientation="vertical"
+                            className="bg-primary"/>
+               
+                <Button variant="ghost" className="border-0 hover:bg-primary/10 rounded-l-none">
+                  <Upload className="w-4 h-4" />
+                </Button>
+              </div>
+ 
             </div>
           </div>
           <FoldersTable />
