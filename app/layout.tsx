@@ -40,35 +40,35 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <SidebarProvider
-            style={
-              {
-                "--sidebar-width": "calc(var(--spacing) * 72)",
-                "--header-height": "calc(var(--spacing) * 12)",
-              } as React.CSSProperties
-            }
-          >
-            <TooltipProvider>
-              <AppSidebar variant="inset" />
-              <SidebarInset>
-                <SiteHeader />
-                <div className="px-4 lg:px-6">
-                  <h1 className="text-base font-medium">
-                    {" "}
-                    {title !== "Dashboard" ? (
-                      <>
-                        <Link href="/dashboard">Dashboard</Link> &gt; {title}
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </h1>
-                </div>
+          <TooltipProvider>
+            <SidebarProvider
+              style={
+                {
+                  "--sidebar-width": "calc(var(--spacing) * 72)",
+                  "--header-height": "calc(var(--spacing) * 12)",
+                } as React.CSSProperties
+              }
+            >
+                <AppSidebar />
+                <SidebarInset>
+                  <SiteHeader />
+                  <div className="px-4 lg:px-6">
+                    <p className="font-sm text-sm text-muted-foreground">
+                      {" "}
+                      {title !== "Dashboard" ? (
+                        <>
+                          <Link href="/dashboard" className="pr-2">Dashboard</Link> &gt; <span className="text-foreground pl-2">{title}</span>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </p>
+                  </div>
 
-                {children}
-              </SidebarInset>
+                  {children}
+                </SidebarInset>
+            </SidebarProvider>
             </TooltipProvider>
-          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
