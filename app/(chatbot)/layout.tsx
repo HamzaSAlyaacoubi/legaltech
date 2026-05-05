@@ -1,7 +1,6 @@
 "use client"
 import { ChatbotSidebar } from "@/components/chatbot-sidebar"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-
 export default function ChatbotLayout({
   children,
 }: Readonly<{

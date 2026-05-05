@@ -188,22 +188,22 @@ function SidebarHeaderContent() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
+        
         <SidebarMenuButton
           asChild
-          className="data-[slot=sidebar-menu-button]:p-1.5! data-[slot=sidebar-menu-button]:py-7!"
+          className="data-[slot=sidebar-menu-button]:p-1.5! data-[slot=sidebar-menu-button]:py-7! "
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          size="sm"
         >
           <a href="#" className="flex items-center">
-            {/* Show logo when not hovered or sidebar is open */}
             {!(isCollapsed && isHovered) && (
               <>
+              
                 <Image
                   src={Logo}
                   alt="Logo"
-                  width={45}
-                  height={45}
-                  className="object-contain"
+                  className="size-12"
                 />
                 <span>
                   <p className="text-base font-semibold text-logo p-0">LegalTech</p>
@@ -217,6 +217,7 @@ function SidebarHeaderContent() {
             {(isHovered || !isCollapsed) && <SidebarTrigger className="ml-auto" />}
           </a>
         </SidebarMenuButton>
+        
       </SidebarMenuItem>
     </SidebarMenu>
   )
