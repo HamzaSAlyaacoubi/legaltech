@@ -8,11 +8,10 @@ import {
   SelectGroup,
   SelectItem,
   SelectLabel,
-  SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { Plus, Upload, ListFilter, FolderPlus, Folder } from "lucide-react"
+import { Upload, ListFilter, FolderPlus } from "lucide-react"
 import { IconSearch } from "@tabler/icons-react"
 
 
@@ -21,6 +20,7 @@ export default function Folders() {
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6">
+
           <div className="flex items-end justify-between">
             <div>
               <h1 className="text-2xl font-bold">Folders</h1>
@@ -37,7 +37,7 @@ export default function Folders() {
                 />
               </div>
               <Select>
-                <CustomSelectTrigger className="">
+                <CustomSelectTrigger>
                   <ListFilter />
                   <SelectValue placeholder="Filter" />
                 </CustomSelectTrigger>
@@ -49,7 +49,9 @@ export default function Folders() {
                     <SelectItem value="client">Client</SelectItem>
                     <SelectItem value="responsable">Responsable</SelectItem>
                     <SelectItem value="date">Date</SelectItem>
+                  </SelectGroup>
                     <Separator orientation="horizontal"/>
+                  <SelectGroup>
                     <SelectItem value="asc">Ascending</SelectItem>
                     <SelectItem value="desc">Descending</SelectItem>
                   </SelectGroup>
@@ -60,9 +62,7 @@ export default function Folders() {
                   <FolderPlus className="w-4 h-4 mr-2" />
                   New Folder
                 </Button>
-                <Separator orientation="vertical"
-                            className="bg-primary"/>
-                
+                <Separator orientation="vertical" className="bg-primary"/>
                 <Button variant="ghost" className="border-0 hover:bg-primary/10 rounded-l-none">
                   <Upload className="w-4 h-4" />
                 </Button>

@@ -40,7 +40,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-import Logo  from "@/public/img/logobgless.png"
+import Logo from "@/public/img/logobgless.png"
 import Image from "next/image"
 
 const data = {
@@ -188,36 +188,37 @@ function SidebarHeaderContent() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        
         <SidebarMenuButton
           asChild
-          className="data-[slot=sidebar-menu-button]:p-1.5! data-[slot=sidebar-menu-button]:py-7! "
+          className="rounded-xl p-0 data-[slot=sidebar-menu-button]:p-1.5! data-[slot=sidebar-menu-button]:py-7!"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           size="sm"
         >
-          <a href="#" className="flex items-center">
-            {!(isCollapsed && isHovered) && (
-              <>
-              
-                <Image
-                  src={Logo}
-                  alt="Logo"
-                  className="size-12"
-                />
-                <span>
-                  <p className="text-base font-semibold text-logo p-0">LegalTech</p>
-                  <p className="text-[0.6rem] text-muted-foreground">
-                    BY HELKINZ
-                  </p>
-                </span>
-              </>
+          <div
+            className={`flex w-full items-center ${
+              isCollapsed ? "justify-center" : "justify-between"
+            }`}
+          >
+            <Image
+              src={Logo}
+              alt="Logo"
+              className={` ${isCollapsed ? "mx-auto size-8" : "size-10"} ${isCollapsed && isHovered ? "hidden" : ""} `}
+            />
+            {!isCollapsed && (
+              <span>
+                <p className="text-base font-semibold text-logo">LegalTech</p>
+                <p className="text-[0.6rem] text-muted-foreground">
+                  BY HELKINZ
+                </p>
+              </span>
             )}
             {/* Show trigger when hovering (if collapsed) or always (if open) */}
-            {(isHovered || !isCollapsed) && <SidebarTrigger className="ml-auto" />}
-          </a>
+            {(isHovered || !isCollapsed) && (
+              <SidebarTrigger className="ml-auto" />
+            )}
+          </div>
         </SidebarMenuButton>
-        
       </SidebarMenuItem>
     </SidebarMenu>
   )
