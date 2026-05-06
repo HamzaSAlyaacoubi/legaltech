@@ -1,10 +1,12 @@
 "use client"
 import { Geist, Geist_Mono, Inter } from "next/font/google"
- 
+
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
- 
+import { ChatProvider } from "@/app/(main)/chat-store/page"
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
  
 const fontMono = Geist_Mono({
@@ -28,11 +30,15 @@ export default function RootLayout({
         inter.variable
       )}
     >
+      
       <body>
         <ThemeProvider>
-          {children}
+          <ChatProvider>
+            {children}
+          </ChatProvider>
         </ThemeProvider>
       </body>
     </html>
   )
 }
+

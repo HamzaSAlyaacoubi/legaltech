@@ -1,31 +1,40 @@
 "use client"
 
-interface ChatMessageProps {
-  role: "user" | "assistant"
-  content: string
-}
-
-export function ChatMessage({ role, content }: ChatMessageProps) {
+export function ChatMessage({ role, content, image }: { role: "user" | "assistant"; content: string; image?: string | null }) {
   const isUser = role === "user"
+  const isShortText = content.length < 60 && !content.includes("\n")
+  const roundedClass = isShortText ? "rounded-full" : "rounded-lg"
 
   return (
-    <div className={`w-full py-6 ${!isUser ? "bg-muted/40" : ""}`}>
-      <div className="max-w-2xl mx-auto px-4">
-        
-        <div className={`flex  ${isUser ? "justify-end" : "justify-start"}`}>
-          
-          <div
-            className={`max-w-[75%]  px-4 py-3 text-sm leading-relaxed ${
-              isUser
-                ? "bg-white border border-gray-200 rounded-4xl text-[#b82c2c]"
-                : "text-foreground"
-            }`}
-          >
-            {content}
-          </div>
+    <div className="w-full">
+      <div className="flex gap-4 items-start">
 
+
+        <div className="flex-1">
+          {isUser ? (
+            <div className="flex justify-end">
+              <div className="space-y-2 max-w-[55%]">
+                <div className={`bg-[#bb1c1c] text-white px-4 py-3 ${roundedClass} text-sm break-words`}>
+                  {content}
+                </div>
+                {image && (
+                  <div className="flex justify-end">
+                    <img src={image} alt="uploaded" className="max-w-full rounded-lg" />
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-2 max-w-[55%]">
+              <div className="text-sm leading-7 text-gray-900 whitespace-pre-wrap break-words">
+                {content}
+              </div>
+              {image && (
+                <img src={image} alt="response" className="max-w-full rounded-lg" />
+              )}
+            </div>
+          )}
         </div>
-
       </div>
     </div>
   )

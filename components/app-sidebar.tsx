@@ -196,7 +196,7 @@ function SidebarHeaderContent() {
           onMouseLeave={() => setIsHovered(false)}
           size="sm"
         >
-          <a href="#" className="flex items-center">
+          <p className="flex items-center">
             {!(isCollapsed && isHovered) && (
               <>
               
@@ -215,7 +215,7 @@ function SidebarHeaderContent() {
             )}
             {/* Show trigger when hovering (if collapsed) or always (if open) */}
             {(isHovered || !isCollapsed) && <SidebarTrigger className="ml-auto" />}
-          </a>
+          </p>
         </SidebarMenuButton>
         
       </SidebarMenuItem>

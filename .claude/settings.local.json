@@ -4,7 +4,8 @@
       "Bash(npm run *)",
       "Bash(curl -s http://localhost:3000/chatbot)",
       "Bash(curl -s http://localhost:3006/chatbot/chatbot)",
-      "Bash(curl -s -I http://localhost:3006)"
+      "Bash(curl -s -I http://localhost:3006)",
+      "Bash(taskkill /PID 19680 /F)"
     ]
   }
 }

@@ -112,7 +112,7 @@ export default function TypingText({
       <span className="text-current">
         {displayBeforeLastWord}
         {displayBeforeLastWord && displayLastWord && ' '}
-        <span className="text-[#d97757]">{displayLastWord}</span>
+        <span className="text-primary">{displayLastWord}</span>
       </span>
       <span
         className={`inline-block w-[2px] h-[1.2em] ml-1 bg-current animate-cursor-blink ${cursorClassName}`}

@@ -7,11 +7,13 @@ export default function ChatbotLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="flex h-screen bg-gradient-to-br from-red-50 to-gray-50">
+    <div className="flex h-screen bg-background">
       <SidebarProvider>
         <ChatbotSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <SidebarTrigger className="text-[#610000] hover:bg-red-50 m-4" />
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <header className="sticky top-0 z-40   px-6 py-4">
+            <SidebarTrigger className="text-primary hover:bg-primary/10" />
+          </header>
           {children}
         </div>
       </SidebarProvider>

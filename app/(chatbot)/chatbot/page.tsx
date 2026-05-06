@@ -1,55 +1,81 @@
 "use client"
 
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { ChatMessage } from "@/components/chat-message"
+import { useRef, useEffect } from "react"
+import { useChat } from "@/app/(main)/chat-store/page"
 import { ChatInput } from "@/components/chat-input"
-
-const mockMessages = [
-  {
-    role: "user" as const,
-    content: "Hello! Can you help me understand contract law basics?",
-  },
-  {
-    role: "assistant" as const,
-    content:
-      "Of course! Contract law is a fundamental area of legal practice. I can help explain the key elements of a valid contract, including offer, acceptance, consideration, and mutual intent to be bound. What specific aspect would you like to explore?",
-  },
-  {
-    role: "user" as const,
-    content: "What about consideration? Can you give me a real example?",
-  },
-  {
-    role: "assistant" as const,
-    content:
-      "Great question! Consideration is the value exchanged between parties that makes a contract binding. For example, in a sales contract: You (buyer) provide money as consideration, and the seller provides goods as consideration. Both parties must give something of value. Even a small amount can be valid consideration—it doesn't have to be equal in value.",
-  },
-]
-
+import { ChatMessage } from "@/components/chat-message"
 
 export default function ChatbotPage() {
+  const { chats, activeChatId, createNewChat, addMessage } = useChat()
+  const bottomRef = useRef<HTMLDivElement>(null)
+
+  const activeChat = chats.find((c) => c.id === activeChatId)
+
+  useEffect(() => {
+    if (!activeChatId) {
+      createNewChat()
+    }
+  }, [activeChatId, createNewChat])
+
+  const handleSend = (text: string, image?: string | null) => {
+    if ((!text.trim() && !image) || !activeChatId) return
+
+    addMessage({
+      role: "user" as const,
+      content: text || "(image)",
+      image,
+    })
+
+    setTimeout(() => {
+      addMessage({
+        role: "assistant" as const,
+        content: "This is a preview response.",
+      })
+    }, 200)
+  }
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [activeChat?.messages])
+
+  const isEmpty = !activeChat || activeChat.messages.length === 0
+
   return (
-    <div className="flex flex-col flex-1 overflow-hidden">
-
-      {/* Scrollable messages */}
-      <div className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full ">
-          <div className="max-w-2xl mx-auto space-y-6">
-            {mockMessages.map((message, index) => (
-              <ChatMessage
-                key={index}
-                role={message.role}
-                content={message.content}
-              />
-            ))}
+    <div className="flex h-screen">
+      <div className="flex flex-1 flex-col">
+        {isEmpty ? (
+          <div className="flex flex-1 flex-col items-center justify-start pt-32">
+            <h1 className="mb-16 font-heading text-3xl text-foreground">
+              Ready when you are.
+            </h1>
+            <div className="w-full max-w-[720px] px-4">
+              <ChatInput onSend={handleSend} variant="center" />
+            </div>
           </div>
-        </ScrollArea>
-      </div>
+        ) : (
+          <>
+            <div className="flex-1 overflow-y-auto">
+              <div className="mx-auto max-w-[768px] space-y-10 px-4 pt-16 pb-32">
+                {activeChat?.messages.map((m, i) => (
+                  <ChatMessage
+                    key={i}
+                    role={m.role}
+                    content={m.content}
+                    image={m.image}
+                  />
+                ))}
+                <div ref={bottomRef} />
+              </div>
+            </div>
 
-      {/* Sticky input */}
-      <div className="border-t bg-white ">
-        <ChatInput />
+            <div className="border-t border-gray-200 bg-white py-4">
+              <div className="mx-auto max-w-[768px] px-4">
+                <ChatInput onSend={handleSend} />
+              </div>
+            </div>
+          </>
+        )}
       </div>
-
     </div>
   )
 }
