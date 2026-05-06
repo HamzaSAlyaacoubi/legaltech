@@ -203,7 +203,7 @@ function SidebarHeaderContent() {
             <Image
               src={Logo}
               alt="Logo"
-              className={` ${isCollapsed ? "mx-auto size-8" : "size-10"} ${isCollapsed && isHovered ? "hidden" : ""} `}
+              className={` ${isCollapsed ? "mx-auto size-6" : "size-10"} ${isCollapsed && isHovered ? "hidden" : ""} `}
             />
             {!isCollapsed && (
               <span>
