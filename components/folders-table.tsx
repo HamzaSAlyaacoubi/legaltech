@@ -1,6 +1,7 @@
 "use client"
- 
+
 import { useState } from "react"
+import Link from "next/link"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,10 +24,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { IconDotsVertical, IconChevronLeft, IconChevronRight } from "@tabler/icons-react"
+import {
+  IconDotsVertical,
+  IconChevronLeft,
+  IconChevronRight,
+} from "@tabler/icons-react"
 import { Folder } from "lucide-react"
- 
-interface Folder {
+import { FolderPropertiesDialog } from "@/components/folder-properties-dialog"
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "./ui/context-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+
+interface FolderTableItem {
   id: string
   folderName: string
   reference: string
@@ -35,8 +48,8 @@ interface Folder {
   date: string
   elements: number
 }
- 
-const sampleFolders: Folder[] = [
+
+const sampleFolders: FolderTableItem[] = [
   {
     id: "1",
     folderName: "Q1 2024 Contracts",
@@ -83,30 +96,38 @@ const sampleFolders: Folder[] = [
     elements: 8,
   },
 ]
- 
+
 export function FoldersTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(4)
-  const totalItems = 24
- 
+  
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null)
+  const [propertiesDialogOpen, setPropertiesDialogOpen] = useState(false)
+  const totalItems = sampleFolders.length
+
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems)
   const paginatedFolders = sampleFolders.slice(startIndex, endIndex)
- 
+
   const handlePrevious = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1))
   }
- 
+
   const handleNext = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages))
   }
- 
+
   const handleItemsPerPageChange = (value: string) => {
     setItemsPerPage(parseInt(value))
     setCurrentPage(1)
   }
- 
+
+  const handleDetailsClick = (folderId: string) => {
+    setSelectedFolderId(folderId)
+    setPropertiesDialogOpen(true)
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="overflow-hidden rounded-4xl border bg-background">
@@ -124,16 +145,46 @@ export function FoldersTable() {
           <TableBody>
             {paginatedFolders.map((folder) => (
               <TableRow key={folder.id}>
-                <TableCell className="font-medium ">
+                <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
-                    <Folder className="text-primary fill-primary" />
-                     {folder.folderName}
+                    <ContextMenu>
+                      <ContextMenuTrigger>
+                        <Link href={`/folders/${folder.id}`}>
+                          <div className="flex items-center gap-2 font-medium transition-colors hover:text-primary">
+                            <Folder className="h-4 w-4 fill-primary text-primary" />
+                            {folder.folderName}
+                          </div>
+                        </Link>
+                      </ContextMenuTrigger>
+                      <ContextMenuContent>
+                        <ContextMenuItem>Copy</ContextMenuItem>
+                        <ContextMenuItem>Download</ContextMenuItem>
+                        <ContextMenuItem
+                          onClick={() => handleDetailsClick(folder.id)}
+                        >
+                          Details
+                        </ContextMenuItem>
+                        <ContextMenuItem className="text-destructive">
+                          Delete
+                        </ContextMenuItem>
+                      </ContextMenuContent>
+                    </ContextMenu>
                   </div>
-                    <p className="text-muted-foreground text-xs pl-8">{folder.elements} Elements</p>
+                  <p className="pl-8 text-xs text-muted-foreground">
+                    {folder.elements} Elements
+                  </p>
                 </TableCell>
                 <TableCell>{folder.reference}</TableCell>
                 <TableCell>{folder.client}</TableCell>
-                <TableCell>{folder.responsible}</TableCell>
+                <TableCell>
+                  <div className="flex flex-1 items-center gap-2">
+                    <Avatar className="w-6 h-6">
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    {folder.responsible}
+                  </div>
+                </TableCell>
                 <TableCell>
                   {new Date(folder.date).toLocaleDateString()}
                 </TableCell>
@@ -150,9 +201,13 @@ export function FoldersTable() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
-                      <DropdownMenuItem>View</DropdownMenuItem>
+                      <DropdownMenuItem>Copy</DropdownMenuItem>
                       <DropdownMenuItem>Download</DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => handleDetailsClick(folder.id)}
+                      >
+                        Details
+                      </DropdownMenuItem>
                       <DropdownMenuItem className="text-destructive">
                         Delete
                       </DropdownMenuItem>
@@ -164,16 +219,21 @@ export function FoldersTable() {
           </TableBody>
         </Table>
       </div>
- 
+
       <div className="flex items-center justify-between px-2">
         <div className="text-sm text-muted-foreground">
           Showing {startIndex + 1} to {endIndex} of {totalItems} folders
         </div>
- 
+
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Folders per page</span>
-            <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
+            <span className="text-sm text-muted-foreground">
+              Folders per page
+            </span>
+            <Select
+              value={itemsPerPage.toString()}
+              onValueChange={handleItemsPerPageChange}
+            >
               <SelectTrigger className="w-16">
                 <SelectValue />
               </SelectTrigger>
@@ -184,7 +244,7 @@ export function FoldersTable() {
               </SelectContent>
             </Select>
           </div>
- 
+
           <div className="flex gap-2">
             <Button
               variant="outline"
@@ -205,6 +265,14 @@ export function FoldersTable() {
           </div>
         </div>
       </div>
+
+      {selectedFolderId && (
+        <FolderPropertiesDialog
+          open={propertiesDialogOpen}
+          onOpenChange={setPropertiesDialogOpen}
+          folderId={selectedFolderId}
+        />
+      )}
     </div>
   )
 }
